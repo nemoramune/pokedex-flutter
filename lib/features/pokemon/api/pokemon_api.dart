@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:pokedex/features/pokemon/api/responses/pokemon_detail_response.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/pokemon_list_response.dart';
+import 'responses/pokemon_list_response.dart';
 
 part 'pokemon_api.g.dart';
 
@@ -10,7 +11,7 @@ abstract class PokemonApi {
   factory PokemonApi(Dio dio, {String baseUrl}) = _PokemonApi;
 
   @GET("/pokemon/{id}")
-  Future<String> getPokemon(@Path("id") int id);
+  Future<PokemonDetailResponse> getPokemon(@Path("id") int id);
 
   @GET("/pokemon")
   Future<PokemonListResponse> getPokemonList(
