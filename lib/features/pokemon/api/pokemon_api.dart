@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/pokemon_list_response.dart';
+
 part 'pokemon_api.g.dart';
 
 @RestApi(baseUrl: "https://pokeapi.co/api/v2/")
@@ -11,5 +13,8 @@ abstract class PokemonApi {
   Future<String> getPokemon(@Path("id") int id);
 
   @GET("/pokemon")
-  Future<String> getPokemonList(@Query("offset") int offset, @Query("limit") int limit);
+  Future<PokemonListResponse> getPokemonList(
+    @Query("offset") int offset,
+    @Query("limit") int limit,
+  );
 }
