@@ -46,3 +46,6 @@ app.*.map.json
 # generated files
 *.freezed.dart
 *.g.dart 
+
+# vscode setting
+.vscode/
