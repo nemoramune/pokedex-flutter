@@ -4,6 +4,7 @@ import 'pokemon_sprites_response.dart';
 import 'pokemon_type_response.dart';
 
 part 'pokemon_detail_response.freezed.dart';
+part 'pokemon_detail_response.g.dart';
 
 @freezed
 class PokemonDetailResponse with _$PokemonDetailResponse {
@@ -15,4 +16,7 @@ class PokemonDetailResponse with _$PokemonDetailResponse {
     required PokemonTypeResponse type,
     required PokemonSpritesResponse sprites,
   }) = _PokemonDetailResponse;
+
+  factory PokemonDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$PokemonDetailResponseFromJson(json);
 }

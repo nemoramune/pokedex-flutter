@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'pokemon_list_item_response.dart';
 
 part 'pokemon_type_response.freezed.dart';
+part 'pokemon_type_response.g.dart';
 
 @freezed
 class PokemonTypeResponse with _$PokemonTypeResponse {
@@ -10,4 +11,6 @@ class PokemonTypeResponse with _$PokemonTypeResponse {
     required int slot,
     required PokemonListItemResponse type,
   }) = _PokemonTypeResponse;
+  factory PokemonTypeResponse.fromJson(Map<String, dynamic> json) =>
+      _$PokemonTypeResponseFromJson(json);
 }
