@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'features/pokemon/components/pokemon_list_view.dart';
+import 'features/pokemon/components/pokemon_list_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
-          appBar: AppBar(title: const Text('Saved Suggestions')),
-          body: const PokemonListView(),
+          appBar: AppBar(title: const Text('PokeDex')),
+          body: const PokemonListPage(),
         ));
   }
 }
