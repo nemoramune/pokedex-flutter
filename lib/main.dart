@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'features/pokemon/components/pokemon_list_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // add this
+  // LocaleSettings.useDeviceLocale(); // and this
   runApp(const ProviderScope(child: MyApp()));
 }
 

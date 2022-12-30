@@ -1,6 +1,13 @@
 targets:
   $default:
     builders:
+      slang_build_runner:
+        options:
+          base_locale: ja
+          input_file_pattern: .i18n.yaml
+          input_directory: assets/i18n
+          output_directory: lib/i18n
+          translation_class_visibility: public
       json_serializable:
         options:
           # Options configure how source code is generated for every

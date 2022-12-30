@@ -1,0 +1,4 @@
+appName: PokeDex
+retry: Retry
+networkError: ネットワークエラーが発生しました
+pokemonListEmptyError: ポケモンのデータが取得できませんでした
