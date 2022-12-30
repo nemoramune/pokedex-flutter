@@ -1,3 +1,4 @@
+import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/features/pokemon/providers/pokemon_repository_provider.dart';
 import 'package:pokedex/features/pokemon/states/pokemon_list_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,27 +14,56 @@ class PokemonListViewModel extends _$PokemonListViewModel {
 
   Future<void> fetch() async {
     if (state is AsyncLoading) return;
-    await Future(() {
-      state = const AsyncLoading<PokemonListState>().copyWithPrevious(state);
-    });
+    await _emitLoadingState();
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = currentStateValue.offset;
     final list = currentStateValue.list;
     final result = await ref.read(pokemonRepositoryProvider).getPokemonList(offset, limit);
     result.when(
-        success: ((resultList) => state = AsyncData(currentStateValue.copyWith(
-              list: list + resultList,
-              offset: offset + limit,
-              isLoadedToLast: resultList.isEmpty,
-            )).copyWithPrevious(state)),
-        failure: ((e, stack) =>
-            state = AsyncError<PokemonListState>(e, stack).copyWithPrevious(state)));
+      success: ((resultList) => _emit(
+            list: list + resultList,
+            offset: offset + limit,
+            isLoadedToLast: resultList.isEmpty,
+          )),
+      failure: _onError,
+    );
   }
 
   Future<void> refresh() async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return fetch();
-    state = AsyncData(currentStateValue.copyWith(list: [], offset: 0)).copyWithPrevious(state);
-    fetch();
+    await _emitLoadingState();
+    final result = await ref.read(pokemonRepositoryProvider).getPokemonList(0, limit);
+    result.when(
+      success: ((resultList) => _emit(
+            list: resultList,
+            offset: limit,
+            isLoadedToLast: resultList.isEmpty,
+          )),
+      failure: _onError,
+    );
+  }
+
+  Future<void> _emitLoadingState() => Future(() {
+        state = const AsyncLoading<PokemonListState>().copyWithPrevious(state);
+      });
+
+  void _emit({
+    required List<PokemonListItem> list,
+    required int offset,
+    required bool isLoadedToLast,
+  }) {
+    final currentStateValue = state.valueOrNull ?? const PokemonListState();
+    state = AsyncData(
+      currentStateValue.copyWith(
+        list: list,
+        offset: limit,
+        isLoadedToLast: list.isEmpty,
+      ),
+    ).copyWithPrevious(state);
+  }
+
+  void _onError(Object error, StackTrace stackTrace) {
+    state = AsyncError<PokemonListState>(error, stackTrace).copyWithPrevious(state);
   }
 }
