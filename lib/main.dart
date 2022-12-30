@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pokedex/i18n/strings.g.dart';
 
 import 'features/pokemon/components/pokemon_list_page.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized(); // add this
-  // LocaleSettings.useDeviceLocale(); // and this
+  WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.useDeviceLocale();
   runApp(const ProviderScope(child: MyApp()));
 }
 
