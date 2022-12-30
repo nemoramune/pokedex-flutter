@@ -1,10 +1,10 @@
 import 'package:pokedex/features/pokemon/api/pokemon_api.dart';
+import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 
 import '../../utils/result.dart';
-import 'model/pokemon_list.dart';
 
 abstract class PokemonRepository {
-  Future<Result<PokemonList>> getPokemonList(
+  Future<Result<List<PokemonListItem>>> getPokemonList(
     int offset,
     int limit,
   );
@@ -15,10 +15,10 @@ class PokemonRepositoryImpl implements PokemonRepository {
   final PokemonApi _pokemonApi;
 
   @override
-  Future<Result<PokemonList>> getPokemonList(int offset, int limit) {
+  Future<Result<List<PokemonListItem>>> getPokemonList(int offset, int limit) {
     return _pokemonApi
         .getPokemonList(offset, limit)
-        .then((value) => PokemonList.from(value))
+        .then((value) => value.results.map((item) => PokemonListItem.from(item)).toList())
         .toResult();
   }
 }
