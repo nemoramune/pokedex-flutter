@@ -6,12 +6,16 @@ import 'package:pokedex/components/progress_view.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/features/pokemon/pokemon_list_view_model.dart';
 import 'package:pokedex/hooks/use_paging_controller.dart';
+import 'package:pokedex/hooks/use_strings.dart';
+
+import '../../../components/error_view.dart';
 
 class PokemonListPage extends HookConsumerWidget {
   const PokemonListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = useStrings();
     final viewModel = ref.watch(pokemonListViewModelProvider.notifier);
     final state = ref.watch(pokemonListViewModelProvider);
     final pagingController = useStateLessPagingController(
@@ -20,6 +24,7 @@ class PokemonListPage extends HookConsumerWidget {
       loadMore: viewModel.fetch,
       error: state.error,
     );
+
     return RefreshIndicator(
       onRefresh: () => viewModel.refresh(),
       child: PagedListView.separated(
@@ -30,8 +35,15 @@ class PokemonListPage extends HookConsumerWidget {
             title: Text(item.name),
             subtitle: Text(item.url),
           ),
+          firstPageErrorIndicatorBuilder: (_) => ErrorView(
+            text: strings.networkError,
+            retry: viewModel.refresh,
+          ),
           newPageProgressIndicatorBuilder: (_) => const ProgressView(),
-          noItemsFoundIndicatorBuilder: (_) => const ProgressView(),
+          noItemsFoundIndicatorBuilder: (_) => ErrorView(
+            text: strings.pokemonListEmptyError,
+            retry: viewModel.refresh,
+          ),
         ),
       ),
     );
