@@ -7,14 +7,15 @@ part 'pokemon_list_view_model.g.dart';
 @riverpod
 class PokemonListViewModel extends _$PokemonListViewModel {
   @override
-  FutureOr<PokemonListState> build() {
-    fetch();
-    return const PokemonListState();
-  }
+  FutureOr<PokemonListState> build() => const PokemonListState();
 
   static const int limit = 20;
 
   Future<void> fetch() async {
+    if (state is AsyncLoading) return;
+    await Future(() {
+      state = const AsyncLoading<PokemonListState>().copyWithPrevious(state);
+    });
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = currentStateValue.offset;
     final list = currentStateValue.list;
