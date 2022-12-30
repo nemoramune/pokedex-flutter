@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pokedex/components/progress_view.dart';
 
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/features/pokemon/pokemon_list_view_model.dart';
@@ -29,12 +30,10 @@ class PokemonListPage extends HookConsumerWidget {
             title: Text(item.name),
             subtitle: Text(item.url),
           ),
-          newPageProgressIndicatorBuilder: (_) => progressView,
-          noItemsFoundIndicatorBuilder: (_) => progressView,
+          newPageProgressIndicatorBuilder: (_) => const ProgressView(),
+          noItemsFoundIndicatorBuilder: (_) => const ProgressView(),
         ),
       ),
     );
   }
-
-  static const progressView = Center(child: CircularProgressIndicator());
 }
