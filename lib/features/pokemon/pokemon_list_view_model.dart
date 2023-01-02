@@ -27,7 +27,6 @@ class PokemonListViewModel extends _$PokemonListViewModel {
       success: ((resultList) => _emit(
             list: list + resultList,
             offset: offset + limit,
-            isLoadedToLast: resultList.isEmpty,
           )),
       failure: _onError,
     );
@@ -43,8 +42,25 @@ class PokemonListViewModel extends _$PokemonListViewModel {
       success: ((resultList) => _emit(
             list: resultList,
             offset: limit,
-            isLoadedToLast: resultList.isEmpty,
           )),
+      failure: _onError,
+    );
+  }
+
+  Future<void> favorite(PokemonListItem item) async {
+    final currentStateValue = state.valueOrNull;
+    if (currentStateValue == null) return;
+    final result = await _pokemonRepository.then((repository) {
+      final request = item.isFavorite ? repository.unfavoritePokemon : repository.favoritePokemon;
+      return request(item.id);
+    });
+    result.when(
+      success: ((resultItem) {
+        final list = currentStateValue.list.toList();
+        final index = list.indexOf(item);
+        list[index] = resultItem;
+        _emit(list: list);
+      }),
       failure: _onError,
     );
   }
@@ -53,16 +69,12 @@ class PokemonListViewModel extends _$PokemonListViewModel {
         state = const AsyncLoading<PokemonListState>().copyWithPrevious(state);
       });
 
-  void _emit({
-    required List<PokemonListItem> list,
-    required int offset,
-    required bool isLoadedToLast,
-  }) {
+  void _emit({required List<PokemonListItem> list, int? offset}) {
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     state = AsyncData(
       currentStateValue.copyWith(
         list: list,
-        offset: offset,
+        offset: offset ?? currentStateValue.offset,
         isLoadedToLast: list.isEmpty,
       ),
     ).copyWithPrevious(state);

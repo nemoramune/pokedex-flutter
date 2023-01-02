@@ -10,6 +10,7 @@ part 'pokemon_list_item.freezed.dart';
 @freezed
 class PokemonListItem with _$PokemonListItem {
   const factory PokemonListItem({
+    required int id,
     required String name,
     required String imageUrl,
     required List<PokemonType> types,
@@ -22,6 +23,7 @@ class PokemonListItem with _$PokemonListItem {
     required bool? isFavorite,
   }) {
     return PokemonListItem(
+      id: entity.id,
       name: entity.name,
       imageUrl: entity.imageUrl,
       types:
@@ -39,6 +41,7 @@ class PokemonListItem with _$PokemonListItem {
         species.names.firstWhereOrNull((element) => element.language.name.startsWith("ja"))?.name ??
             detail.name;
     return PokemonListItem(
+      id: detail.id,
       name: nameJp,
       imageUrl: detail.sprites.frontDefault,
       types: detail.types
