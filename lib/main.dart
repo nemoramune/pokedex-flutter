@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/i18n/strings.g.dart';
 
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
         title: 'PokeDex',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: "Noto Sans JP",
         ),
+        supportedLocales: LocaleSettings.supportedLocales,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
         home: Scaffold(
           appBar: AppBar(title: const Text('PokeDex')),
           body: const PokemonListPage(),
