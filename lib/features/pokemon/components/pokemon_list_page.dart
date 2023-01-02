@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokedex/components/progress_view.dart';
+import 'package:pokedex/features/pokemon/components/pokemon_list_item_view.dart';
 
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/features/pokemon/pokemon_list_view_model.dart';
@@ -31,10 +32,7 @@ class PokemonListPage extends HookConsumerWidget {
         pagingController: pagingController,
         separatorBuilder: (context, index) => const Divider(),
         builderDelegate: PagedChildBuilderDelegate<PokemonListItem>(
-          itemBuilder: (context, item, index) => ListTile(
-            title: Text(item.name),
-            subtitle: Text(item.url),
-          ),
+          itemBuilder: (context, item, index) => PokemonListItemView(data: item),
           firstPageErrorIndicatorBuilder: (_) => ErrorView(
             text: strings.networkError,
             retry: viewModel.refresh,
