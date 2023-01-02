@@ -46,7 +46,7 @@ app.*.map.json
 # generated files
 *.freezed.dart
 *.g.dart 
+GeneratedPluginRegistrant.swift
 
 # vscode setting
 .vscode/
-macos/Flutter/GeneratedPluginRegistrant.swift
