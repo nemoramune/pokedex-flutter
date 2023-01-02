@@ -13,7 +13,7 @@ class PokemonDetailResponse with _$PokemonDetailResponse {
     required String name,
     required int height,
     required int weight,
-    required PokemonTypeResponse type,
+    required List<PokemonTypeResponse> types,
     required PokemonSpritesResponse sprites,
   }) = _PokemonDetailResponse;
 
