@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
 import 'package:pokedex/i18n/strings.g.dart';
 
 import 'features/pokemon/components/pokemon_list_page.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(PokemonEntityAdapter());
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   runApp(const ProviderScope(child: MyApp()));
