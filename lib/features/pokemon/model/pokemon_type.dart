@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 enum PokemonType {
   normal(nameJp: "ノーマル", color: 0xffaea886),
   fire(nameJp: "ほのお", color: 0xfff45c19),
@@ -21,10 +19,10 @@ enum PokemonType {
   fairy(nameJp: "フェアリー", color: 0xffffbbff),
   ;
 
-  const PokemonType({required this.nameJp, required this.color});
-
   final String nameJp;
+
   final int color;
+  const PokemonType({required this.nameJp, required this.color});
 
   static PokemonType? getOrNull(String name) {
     const List<PokemonType?> types = PokemonType.values;
