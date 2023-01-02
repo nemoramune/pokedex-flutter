@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'pokemon_list_item_response.dart';
-
 part 'pokemon_sprites_response.freezed.dart';
 part 'pokemon_sprites_response.g.dart';
 

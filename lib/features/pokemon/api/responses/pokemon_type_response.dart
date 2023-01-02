@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'pokemon_list_item_response.dart';
+import 'pokemon_name_and_url_response.dart';
 
 part 'pokemon_type_response.freezed.dart';
 part 'pokemon_type_response.g.dart';
@@ -9,7 +9,7 @@ part 'pokemon_type_response.g.dart';
 class PokemonTypeResponse with _$PokemonTypeResponse {
   const factory PokemonTypeResponse({
     required int slot,
-    required PokemonListItemResponse type,
+    required PokemonNameAndUrlResponse type,
   }) = _PokemonTypeResponse;
   factory PokemonTypeResponse.fromJson(Map<String, dynamic> json) =>
       _$PokemonTypeResponseFromJson(json);
