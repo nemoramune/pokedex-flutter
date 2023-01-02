@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'PokeDex',
         theme: ThemeData(
+          useMaterial3: true,
           primarySwatch: Colors.blue,
           fontFamily: "Noto Sans JP",
         ),
