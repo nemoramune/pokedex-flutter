@@ -1,4 +1,5 @@
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
+import 'package:pokedex/features/pokemon/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/providers/pokemon_repository_provider.dart';
 import 'package:pokedex/features/pokemon/states/pokemon_list_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,6 +11,8 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   @override
   FutureOr<PokemonListState> build() => const PokemonListState();
 
+  Future<PokemonRepository> get _pokemonRepository => ref.read(pokemonRepositoryProvider.future);
+
   static const int limit = 20;
 
   Future<void> fetch() async {
@@ -18,7 +21,8 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = currentStateValue.offset;
     final list = currentStateValue.list;
-    final result = await ref.read(pokemonRepositoryProvider).getPokemonList(offset, limit);
+    final result =
+        await _pokemonRepository.then((repository) => repository.getPokemonList(offset, limit));
     result.when(
       success: ((resultList) => _emit(
             list: list + resultList,
@@ -33,7 +37,8 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return fetch();
     await _emitLoadingState();
-    final result = await ref.read(pokemonRepositoryProvider).getPokemonList(0, limit);
+    final result =
+        await _pokemonRepository.then((repository) => repository.getPokemonList(0, limit));
     result.when(
       success: ((resultList) => _emit(
             list: resultList,
@@ -57,7 +62,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     state = AsyncData(
       currentStateValue.copyWith(
         list: list,
-        offset: limit,
+        offset: offset,
         isLoadedToLast: list.isEmpty,
       ),
     ).copyWithPrevious(state);
