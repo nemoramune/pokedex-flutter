@@ -10,7 +10,7 @@ class PokemonListItemView extends StatelessWidget {
   });
 
   final PokemonListItem data;
-  final void Function(PokemonListItem) onPressedFavorite;
+  final void Function(PokemonListItem item) onPressedFavorite;
 
   @override
   Widget build(BuildContext context) {

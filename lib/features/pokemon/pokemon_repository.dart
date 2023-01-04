@@ -27,7 +27,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
     final requests = List<Future<PokemonListItem?>>.generate(
       limit,
       (index) => awaitCatching<PokemonListItem?, DioError>(
-        () => _getPokemon(offset + index + 1 + 880),
+        () => _getPokemon(offset + index + 1),
         onError: () => null,
         test: (error) => error.response?.statusCode == 404,
       ).thenNullable(),
