@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
@@ -23,11 +24,13 @@ class PokemonListItemView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Gap(4),
-              Image.network(
-                data.imageUrl,
+              CachedNetworkImage(
+                imageUrl: data.imageUrl,
                 width: 128,
                 height: 128,
                 fit: BoxFit.fitHeight,
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
                 constraints: const BoxConstraints(maxWidth: 220),
