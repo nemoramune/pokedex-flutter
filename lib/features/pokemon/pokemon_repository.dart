@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:pokedex/features/pokemon/api/pokemon_api.dart';
 import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
@@ -23,8 +24,17 @@ class PokemonRepositoryImpl implements PokemonRepository {
 
   @override
   Future<Result<List<PokemonListItem>>> getPokemonList(int offset, int limit) {
-    final requests = List.generate(limit, (index) => _getPokemon(offset + index + 1));
-    return Future.wait(requests).toResult();
+    final requests = List<Future<PokemonListItem?>>.generate(
+      limit,
+      (index) => awaitCatching<PokemonListItem?, DioError>(
+        () => _getPokemon(offset + index + 1 + 880),
+        onError: () => null,
+        test: (error) => error.response?.statusCode == 404,
+      ).thenNullable(),
+    );
+    return Future.wait(requests)
+        .then((list) => list.whereType<PokemonListItem>().toList())
+        .toResult();
   }
 
   @override
