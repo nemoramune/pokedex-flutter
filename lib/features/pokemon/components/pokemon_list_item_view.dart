@@ -30,7 +30,8 @@ class PokemonListItemView extends StatelessWidget {
                 height: 128,
                 fit: BoxFit.fitHeight,
                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    const Center(child: Icon(Icons.error_outline, size: 64, color: Colors.red)),
               ),
               Container(
                 constraints: const BoxConstraints(maxWidth: 220),
