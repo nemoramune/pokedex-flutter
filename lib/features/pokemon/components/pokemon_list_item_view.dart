@@ -42,6 +42,10 @@ class PokemonListItemView extends StatelessWidget {
                   iconSize: 32,
                   color: data.isFavorite ? Colors.red : Colors.grey,
                   isSelected: data.isFavorite,
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(const CircleBorder()),
+                    padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
+                  ),
                   icon: const Icon(Icons.favorite_border),
                   selectedIcon: const Icon(Icons.favorite),
                   onPressed: () => onPressedFavorite(data),
