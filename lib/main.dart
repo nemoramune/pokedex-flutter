@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
+import 'package:pokedex/hooks/use_strings.dart';
 import 'package:pokedex/i18n/strings.g.dart';
-
-import 'features/pokemon/components/pokemon_list_page.dart';
+import 'package:pokedex/routes/routes.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(PokemonEntityAdapter());
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _router = GoRouter(
+    routes: $appRoutes,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'PokeDex',
-        theme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.blue,
-          fontFamily: "Noto Sans JP",
-        ),
-        supportedLocales: LocaleSettings.supportedLocales,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        home: Scaffold(
-          appBar: AppBar(title: const Text('PokeDex')),
-          body: const PokemonListPage(),
-        ));
+    final strings = useStrings();
+    return MaterialApp.router(
+      title: strings.appName,
+      theme: ThemeData(
+        useMaterial3: true,
+        primarySwatch: Colors.blue,
+        fontFamily: "Noto Sans JP",
+      ),
+      supportedLocales: LocaleSettings.supportedLocales,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: _router.routeInformationProvider,
+    );
   }
 }
