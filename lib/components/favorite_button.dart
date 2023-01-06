@@ -16,6 +16,9 @@ class FavoriteButton extends StatelessWidget {
       iconSize: 32,
       color: isFavorite ? Colors.red : Colors.grey,
       isSelected: isFavorite,
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all(const CircleBorder()),
+      ),
       icon: const Icon(Icons.favorite_border),
       selectedIcon: const Icon(Icons.favorite),
       onPressed: () => onPressedFavorite(),

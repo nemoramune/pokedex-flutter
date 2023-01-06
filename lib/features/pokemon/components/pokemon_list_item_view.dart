@@ -25,7 +25,7 @@ class PokemonListItemView extends StatelessWidget {
       },
       child: Center(
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 640),
+          constraints: const BoxConstraints(maxWidth: 400),
           child: IntrinsicHeight(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -41,17 +41,16 @@ class PokemonListItemView extends StatelessWidget {
                   errorWidget: (context, url, error) =>
                       const Center(child: Icon(Icons.error_outline, size: 64, color: Colors.red)),
                 ),
-                Container(
-                  constraints: const BoxConstraints(maxWidth: 220),
+                Expanded(
+                  flex: 1,
+                  // constraints: const BoxConstraints(maxWidth: 220),
                   child: _PokemonListItemInfo(data: data),
                 ),
-                Center(
-                  child: FavoriteButton(
-                    isFavorite: data.isFavorite,
-                    onPressedFavorite: () {
-                      onPressedFavorite(data);
-                    },
-                  ),
+                FavoriteButton(
+                  isFavorite: data.isFavorite,
+                  onPressedFavorite: () {
+                    onPressedFavorite(data);
+                  },
                 ),
                 const Gap(4),
               ],

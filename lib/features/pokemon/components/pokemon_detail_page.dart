@@ -46,21 +46,25 @@ class PokemonDetailPage extends HookConsumerWidget {
             ),
           ),
           const Gap(8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                data.name,
-                style: Theme.of(context).textTheme.headline2?.copyWith(color: Colors.black),
-              ),
-              FavoriteButton(
-                isFavorite: data.isFavorite,
-                onPressedFavorite: () {
-                  viewModel.favorite(data);
-                },
-              )
-            ],
+          IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  data.name,
+                  style: Theme.of(context).textTheme.headline2?.copyWith(color: Colors.black),
+                ),
+                FavoriteButton(
+                  isFavorite: data.isFavorite,
+                  onPressedFavorite: () {
+                    viewModel.favorite(data);
+                  },
+                )
+              ],
+            ),
           ),
+          const Gap(8),
           PokemonTypeChips(types: data.types),
           const Gap(8),
           Column(
