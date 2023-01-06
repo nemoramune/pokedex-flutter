@@ -2,3 +2,5 @@ appName: PokeDex
 retry: Retry
 networkError: ネットワークエラーが発生しました
 pokemonListEmptyError: ポケモンのデータが取得できませんでした
+height: "高さ: $height"
+weight: "重さ: $weight"
