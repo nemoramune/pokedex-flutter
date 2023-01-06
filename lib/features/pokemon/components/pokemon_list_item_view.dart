@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pokedex/components/favorite_button.dart';
+import 'package:pokedex/features/pokemon/components/pokemon_type_chips.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/routes/routes.dart';
 
@@ -77,25 +78,7 @@ class _PokemonListItemInfo extends StatelessWidget {
           data.name,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Row(
-          children: data.types.fold(
-            <Widget>[],
-            (list, type) {
-              final chipColor = Color(type.color);
-              final textColor = chipColor.computeLuminance() > 0.5 ? Colors.black87 : Colors.white;
-              final chip = Chip(
-                label: Text(
-                  type.nameJp,
-                  style: TextStyle(color: textColor),
-                ),
-                backgroundColor: chipColor,
-              );
-              if (list.isNotEmpty) list.add(const Gap(8));
-              list.add(chip);
-              return list;
-            },
-          ),
-        ),
+        PokemonTypeChips(types: data.types),
       ],
     );
   }
