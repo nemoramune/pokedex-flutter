@@ -14,7 +14,6 @@ class PokemonListItem with _$PokemonListItem {
     required String name,
     required String imageUrl,
     required List<PokemonType> types,
-    required String flavorText,
     required bool isFavorite,
   }) = _PokemonListItem;
 
@@ -28,7 +27,6 @@ class PokemonListItem with _$PokemonListItem {
       imageUrl: entity.imageUrl,
       types:
           entity.types.map((type) => PokemonType.getOrNull(type)).whereType<PokemonType>().toList(),
-      flavorText: entity.flavorText,
       isFavorite: isFavorite ?? false,
     );
   }
@@ -48,10 +46,6 @@ class PokemonListItem with _$PokemonListItem {
           .map((type) => PokemonType.getOrNull(type.type.name))
           .whereType<PokemonType>()
           .toList(),
-      flavorText: species.flavorTextEntries
-              .lastWhereOrNull((element) => element.language.name.startsWith("ja"))
-              ?.flavorText ??
-          "",
       isFavorite: false,
     );
   }
