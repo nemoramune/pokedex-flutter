@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokedex/features/pokemon/api/pokemon_api.dart';
 import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_detail.dart';
@@ -18,6 +19,8 @@ abstract class PokemonRepository {
 
   Future<Result<void>> favoritePokemon(int id);
   Future<Result<void>> unfavoritePokemon(int id);
+
+  Stream<int> get favoriteEventStream;
 }
 
 class PokemonRepositoryImpl implements PokemonRepository {
@@ -71,4 +74,8 @@ class PokemonRepositoryImpl implements PokemonRepository {
     await _pokemonEntityBox.put(id, entityFromResponse);
     return entityFromResponse;
   }
+
+  @override
+  Stream<int> get favoriteEventStream =>
+      _pokemonFavoriteBox.watch().where((event) => event.key is int).map((event) => event.key);
 }

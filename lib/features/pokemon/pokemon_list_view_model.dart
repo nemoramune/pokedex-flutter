@@ -10,9 +10,14 @@ part 'pokemon_list_view_model.g.dart';
 @riverpod
 class PokemonListViewModel extends _$PokemonListViewModel {
   @override
-  FutureOr<PokemonListState> build() => const PokemonListState();
+  FutureOr<PokemonListState> build() async {
+    final repository = await _pokemonRepositoryFuture;
+    repository.favoriteEventStream.listen(_updateFavorite);
+    return const PokemonListState();
+  }
 
-  Future<PokemonRepository> get _pokemonRepository => ref.read(pokemonRepositoryProvider.future);
+  Future<PokemonRepository> get _pokemonRepositoryFuture =>
+      ref.read(pokemonRepositoryProvider.future);
 
   static const int limit = 20;
 
@@ -20,30 +25,14 @@ class PokemonListViewModel extends _$PokemonListViewModel {
 
   Future<void> refresh() => _fetch(isRefresh: true);
 
-  Future<void> favorite(PokemonListItem item) async {
-    final currentStateValue = state.valueOrNull;
-    if (currentStateValue == null) return;
-    final result = await _pokemonRepository.then((repository) {
-      final request = item.isFavorite ? repository.unfavoritePokemon : repository.favoritePokemon;
-      return request(item.id);
-    });
-    result.onSuccess((resultItem) {
-      final list = currentStateValue.list.toList();
-      final index = list.indexOf(item);
-      list[index] = resultItem;
-      _emit(list: list);
-    }).onFailure(_onError);
-  }
-
   Future<void> _fetch({bool isRefresh = false}) async {
-    if (state is AsyncLoading) return;
+    if (state.isReloading) return;
     await _emitLoadingState();
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = isRefresh ? 0 : currentStateValue.offset;
     final list = currentStateValue.list;
-    final result = await _pokemonRepository.then(
-      (repository) => repository.getPokemonList(offset, limit),
-    );
+    final repository = await _pokemonRepositoryFuture;
+    final result = await repository.getPokemonList(offset, limit);
     result
         .onSuccess(
           (resultList) => _emit(
@@ -53,6 +42,30 @@ class PokemonListViewModel extends _$PokemonListViewModel {
           ),
         )
         .onFailure(_onError);
+  }
+
+  Future<void> favorite(PokemonListItem item) async {
+    final currentStateValue = state.valueOrNull;
+    if (currentStateValue == null) return;
+    // TODO refactor by use case
+    final repository = await _pokemonRepositoryFuture;
+    final favoriteRequest =
+        item.isFavorite ? repository.unfavoritePokemon : repository.favoritePokemon;
+    await favoriteRequest(item.id).then((_) => _updateFavorite(item.id));
+  }
+
+  Future<void> _updateFavorite(int id) async {
+    final currentStateValue = state.valueOrNull;
+    if (currentStateValue == null) return;
+    final repository = await _pokemonRepositoryFuture;
+    final result = await repository.getPokemonListItem(id);
+    result.onSuccess((resultItem) {
+      final list = currentStateValue.list.toList();
+      final index = list.indexWhere((item) => item.id == id);
+      if (index == -1) return;
+      list[index] = resultItem;
+      _emit(list: list);
+    }).onFailure(_onError);
   }
 
   void _emit({
