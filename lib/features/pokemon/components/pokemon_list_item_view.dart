@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pokedex/components/favorite_button.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/routes/routes.dart';
 
@@ -44,17 +45,11 @@ class PokemonListItemView extends StatelessWidget {
                   child: _PokemonListItemInfo(data: data),
                 ),
                 Center(
-                  child: IconButton(
-                    iconSize: 32,
-                    color: data.isFavorite ? Colors.red : Colors.grey,
-                    isSelected: data.isFavorite,
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(const CircleBorder()),
-                      padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
-                    ),
-                    icon: const Icon(Icons.favorite_border),
-                    selectedIcon: const Icon(Icons.favorite),
-                    onPressed: () => onPressedFavorite(data),
+                  child: FavoriteButton(
+                    isFavorite: data.isFavorite,
+                    onPressedFavorite: () {
+                      onPressedFavorite(data);
+                    },
                   ),
                 ),
                 const Gap(4),
