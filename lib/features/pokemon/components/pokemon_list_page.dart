@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/features/pokemon/components/pokemon_list_view.dart';
 import 'package:pokedex/features/pokemon/pokemon_list_view_model.dart';
 import 'package:pokedex/hooks/use_strings.dart';
+import 'package:pokedex/routes/routes.dart';
 
 class PokemonListPage extends HookConsumerWidget {
   const PokemonListPage({super.key});
@@ -19,7 +20,8 @@ class PokemonListPage extends HookConsumerWidget {
         isLast: state.valueOrNull?.isLoadedToLast,
         error: state.error,
         loadMore: viewModel.fetch,
-        onPressedFavorite: viewModel.favorite,
+        onTapListItem: (item) => PokemonListDetailRoute(id: item.id).go(context),
+        onPressedFavorite: viewModel.toggleFavorite,
         refresh: viewModel.refresh,
       ),
     );

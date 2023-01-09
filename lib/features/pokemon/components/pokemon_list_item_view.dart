@@ -4,16 +4,17 @@ import 'package:gap/gap.dart';
 import 'package:pokedex/components/favorite_button.dart';
 import 'package:pokedex/features/pokemon/components/pokemon_type_chips.dart';
 import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
-import 'package:pokedex/routes/routes.dart';
 
 class PokemonListItemView extends StatelessWidget {
   const PokemonListItemView({
     required this.data,
+    required this.onTapListItem,
     required this.onPressedFavorite,
     super.key,
   });
 
   final PokemonListItem data;
+  final void Function(PokemonListItem item) onTapListItem;
   final void Function(PokemonListItem item) onPressedFavorite;
 
   @override
@@ -21,7 +22,7 @@ class PokemonListItemView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        PokemonDetailRoute(id: data.id).go(context);
+        onTapListItem(data);
       },
       child: Center(
         child: Container(

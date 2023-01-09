@@ -44,7 +44,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
         .onFailure(_onError);
   }
 
-  Future<void> favorite(PokemonListItem item) async {
+  Future<void> toggleFavorite(PokemonListItem item) async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return;
     // TODO refactor by use case
