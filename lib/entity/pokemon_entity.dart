@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_detail_response.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_species_response.dart';
+import 'package:pokedex/api/responses/pokemon_detail_response.dart';
+import 'package:pokedex/api/responses/pokemon_species_response.dart';
 
 part 'pokemon_entity.g.dart';
 

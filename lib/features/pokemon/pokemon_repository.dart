@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pokedex/features/pokemon/api/pokemon_api.dart';
-import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_detail.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
+import 'package:pokedex/api/pokemon_api.dart';
+import 'package:pokedex/entity/pokemon_entity.dart';
+import 'package:pokedex/model/pokemon_detail.dart';
+import 'package:pokedex/model/pokemon_list_item.dart';
 
 import '../../utils/result.dart';
 

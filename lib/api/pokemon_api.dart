@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_detail_response.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_species_response.dart';
 import 'package:retrofit/retrofit.dart';
 
+import 'responses/pokemon_detail_response.dart';
 import 'responses/pokemon_list_response.dart';
+import 'responses/pokemon_species_response.dart';
 
 part 'pokemon_api.g.dart';
 

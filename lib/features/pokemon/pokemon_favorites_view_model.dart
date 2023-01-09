@@ -1,15 +1,15 @@
 import 'package:collection/collection.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
 import 'package:pokedex/features/pokemon/pokemon_repository.dart';
-import 'package:pokedex/features/pokemon/providers/pokemon_repository_provider.dart';
-import 'package:pokedex/features/pokemon/states/pokemon_list_state.dart';
+import 'package:pokedex/model/pokemon_list_item.dart';
+import 'package:pokedex/providers/pokemon_repository_provider.dart';
+import 'package:pokedex/states/pokemon_list_state.dart';
 import 'package:pokedex/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'pokemon_favorite_list_view_model.g.dart';
+part 'pokemon_favorites_view_model.g.dart';
 
 @riverpod
-class PokemonFavoritesViewModel extends _$PokemonFavoriteListViewModel {
+class PokemonFavoritesViewModel extends _$PokemonFavoritesViewModel {
   @override
   FutureOr<PokemonListState> build() async {
     final repository = await _pokemonRepositoryFuture;

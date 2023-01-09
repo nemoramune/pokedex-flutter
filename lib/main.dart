@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/components/scaffold_with_nav_bar.dart';
-import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
+import 'package:pokedex/entity/pokemon_entity.dart';
 import 'package:pokedex/hooks/use_strings.dart';
 import 'package:pokedex/i18n/strings.g.dart';
 import 'package:pokedex/routes/routes.dart';

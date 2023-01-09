@@ -11,8 +11,8 @@ class PokemonFavoritesPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = useStrings();
-    final viewModel = ref.watch(pokemonFavoriteListViewModelProvider.notifier);
-    final state = ref.watch(pokemonFavoriteListViewModelProvider);
+    final viewModel = ref.watch(pokemonFavoritesViewModelProvider.notifier);
+    final state = ref.watch(pokemonFavoritesViewModelProvider);
     return Scaffold(
       appBar: AppBar(title: Text(strings.favorite)),
       body: PokemonListView(

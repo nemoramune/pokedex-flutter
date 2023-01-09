@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_type.dart';
+import 'package:pokedex/model/pokemon_type.dart';
 
 class PokemonTypeChips extends StatelessWidget {
   const PokemonTypeChips({required this.types, super.key});

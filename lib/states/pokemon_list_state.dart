@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
+import 'package:pokedex/model/pokemon_list_item.dart';
+
 part 'pokemon_list_state.freezed.dart';
 
 @freezed

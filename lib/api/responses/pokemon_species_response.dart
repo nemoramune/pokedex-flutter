@@ -1,10 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_flavor_text_response.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_name_and_url_response.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_name_response.dart';
 
-import 'pokemon_sprites_response.dart';
-import 'pokemon_type_response.dart';
+import 'pokemon_flavor_text_response.dart';
+import 'pokemon_name_response.dart';
 
 part 'pokemon_species_response.freezed.dart';
 part 'pokemon_species_response.g.dart';

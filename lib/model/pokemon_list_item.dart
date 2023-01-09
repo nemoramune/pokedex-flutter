@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_detail_response.dart';
-import 'package:pokedex/features/pokemon/api/responses/pokemon_species_response.dart';
-import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_type.dart';
+import 'package:pokedex/api/responses/pokemon_detail_response.dart';
+import 'package:pokedex/api/responses/pokemon_species_response.dart';
+import 'package:pokedex/entity/pokemon_entity.dart';
+import 'package:pokedex/model/pokemon_type.dart';
 
 part 'pokemon_list_item.freezed.dart';
 

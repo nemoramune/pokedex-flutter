@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pokedex/components/favorite_button.dart';
 import 'package:pokedex/features/pokemon/components/pokemon_type_chips.dart';
-import 'package:pokedex/features/pokemon/model/pokemon_list_item.dart';
+import 'package:pokedex/model/pokemon_list_item.dart';
 
 class PokemonListItemView extends StatelessWidget {
   const PokemonListItemView({
