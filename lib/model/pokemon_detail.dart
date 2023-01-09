@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/features/pokemon/api/responses/pokemon_detail_response.dart';
 import 'package:pokedex/features/pokemon/api/responses/pokemon_species_response.dart';
