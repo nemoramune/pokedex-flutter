@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:pokedex/model/pokemon_list_item.dart';
-import 'package:pokedex/repositories/pokemon_repository.dart';
-import 'package:pokedex/repositories/pokemon_repository_provider.dart';
 import 'package:pokedex/states/pokemon_list_state.dart';
+import 'package:pokedex/usecases/get_favorite_event_stream.dart';
+import 'package:pokedex/usecases/get_favorite_pokemon_list.dart';
+import 'package:pokedex/usecases/get_pokemon_list_item.dart';
+import 'package:pokedex/usecases/toggle_favorite_pokemon.dart';
 import 'package:pokedex/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,13 +14,10 @@ part 'pokemon_favorites_view_model.g.dart';
 class PokemonFavoritesViewModel extends _$PokemonFavoritesViewModel {
   @override
   FutureOr<PokemonListState> build() async {
-    final repository = await _pokemonRepositoryFuture;
-    repository.favoriteEventStream.listen(_updateFavorite);
+    final favoriteEventStream = await ref.watch(getFavoriteEventStreamProvider.future);
+    favoriteEventStream.listen(_updateFavorite);
     return const PokemonListState();
   }
-
-  Future<PokemonRepository> get _pokemonRepositoryFuture =>
-      ref.read(pokemonRepositoryProvider.future);
 
   static const int limit = 20;
 
@@ -32,8 +31,7 @@ class PokemonFavoritesViewModel extends _$PokemonFavoritesViewModel {
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = isRefresh ? 0 : currentStateValue.offset;
     final list = currentStateValue.list;
-    final repository = await _pokemonRepositoryFuture;
-    final result = await repository.getFavoritePokemonList(offset, limit);
+    final result = await ref.read(getFavoritePokemonListProvider(offset, limit).future);
     result
         .onSuccess(
           (resultList) => _emit(
@@ -48,18 +46,15 @@ class PokemonFavoritesViewModel extends _$PokemonFavoritesViewModel {
   Future<void> toggleFavorite(PokemonListItem item) async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return;
-    // TODO refactor by use case
-    final repository = await _pokemonRepositoryFuture;
-    final favoriteRequest =
-        item.isFavorite ? repository.unfavoritePokemon : repository.favoritePokemon;
-    await favoriteRequest(item.id).then((_) => _updateFavorite(item.id));
+    await ref
+        .read(toggleFavoritePokemonProvider(item.id).future)
+        .then((_) => _updateFavorite(item.id));
   }
 
   Future<void> _updateFavorite(int id) async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return;
-    final repository = await _pokemonRepositoryFuture;
-    final result = await repository.getPokemonListItem(id);
+    final result = await ref.read(getPokemonListItemProvider(id).future);
     result.onSuccess((resultItem) {
       final list = currentStateValue.list.toList();
       if (resultItem.isFavorite) {
