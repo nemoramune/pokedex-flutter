@@ -44,20 +44,21 @@ PagingController<void, ItemType> useStateLessPagingController<ItemType>({
   List<Object?>? keys,
 }) =>
     usePagingController<bool, ItemType>(
-        firstPageKey: false,
-        itemList: itemList,
-        nextPageKey: isLast ?? false ? null : false,
-        addPageRequestListener: (_) => loadMore(),
-        error: error,
-        keys: keys);
+      firstPageKey: false,
+      itemList: itemList,
+      nextPageKey: isLast ?? false ? null : false,
+      addPageRequestListener: (_) => loadMore(),
+      error: error,
+      keys: keys,
+    );
 
 class _PagingControllerHook<PageKeyType, ItemType>
     extends Hook<PagingController<PageKeyType, ItemType>> {
   const _PagingControllerHook({
     required this.firstPageKey,
     required this.addPageRequestListener,
-    List<Object?>? keys,
-  }) : super(keys: keys);
+    super.keys,
+  });
 
   final PageKeyType firstPageKey;
   final void Function(PageKeyType) addPageRequestListener;
