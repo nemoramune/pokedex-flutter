@@ -23,6 +23,7 @@ abstract class PokemonRepository {
 
   Future<Result<PokemonDetail>> getPokemonDetail(int id);
 
+  bool isFavorite(int id);
   Future<Result<void>> favoritePokemon(int id);
   Future<Result<void>> unfavoritePokemon(int id);
 
@@ -66,6 +67,9 @@ class PokemonRepositoryImpl implements PokemonRepository {
         .then((list) => list.whereType<PokemonListItem>().toList())
         .toResult();
   }
+
+  @override
+  bool isFavorite(int id) => _pokemonFavoriteBox.get(id) ?? false;
 
   @override
   Future<Result<void>> favoritePokemon(int id) => _pokemonFavoriteBox.put(id, true).toResult();
