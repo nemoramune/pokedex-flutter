@@ -23,6 +23,7 @@ class PokemonListPage extends HookConsumerWidget {
         onTapListItem: (item) => PokemonListDetailRoute(id: item.id).go(context),
         onPressedFavorite: viewModel.toggleFavorite,
         refresh: viewModel.refresh,
+        emptyErrorMessage: strings.pokemonListEmptyError,
       ),
     );
   }

@@ -5,11 +5,13 @@ class ErrorView extends StatelessWidget {
   const ErrorView({
     required this.text,
     this.retry,
+    this.enableRetryButton = true,
     super.key,
   });
 
   final String text;
   final void Function()? retry;
+  final bool enableRetryButton;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ErrorView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(text),
-          if (retry != null)
+          if (enableRetryButton && retry != null)
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: ElevatedButton(

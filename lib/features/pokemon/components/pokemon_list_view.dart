@@ -18,6 +18,8 @@ class PokemonListView extends HookConsumerWidget {
     required this.onTapListItem,
     required this.onPressedFavorite,
     required this.refresh,
+    required this.emptyErrorMessage,
+    this.enableRetryButton = true,
     super.key,
   });
 
@@ -28,6 +30,8 @@ class PokemonListView extends HookConsumerWidget {
   final void Function(PokemonListItem item) onTapListItem;
   final void Function(PokemonListItem item) onPressedFavorite;
   final void Function() refresh;
+  final String emptyErrorMessage;
+  final bool enableRetryButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,8 +62,9 @@ class PokemonListView extends HookConsumerWidget {
           ),
           newPageProgressIndicatorBuilder: (_) => const ProgressView(),
           noItemsFoundIndicatorBuilder: (_) => ErrorView(
-            text: strings.pokemonListEmptyError,
+            text: emptyErrorMessage,
             retry: refresh,
+            enableRetryButton: enableRetryButton,
           ),
         ),
       ),
