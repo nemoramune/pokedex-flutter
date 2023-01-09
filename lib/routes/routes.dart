@@ -12,18 +12,29 @@ part 'routes.g.dart';
 )
 class PokemonListRoute extends GoRouteData {
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const PokemonListPage();
-  }
+  Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const PokemonListPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
 }
 
 class PokemonListDetailRoute extends GoRouteData {
   PokemonListDetailRoute({required this.id});
   final int id;
+
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return PokemonDetailPage(id: id);
-  }
+  Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: PokemonDetailPage(id: id),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
 }
 
 @TypedGoRoute<PokemonFavoritesRoute>(
@@ -32,16 +43,26 @@ class PokemonListDetailRoute extends GoRouteData {
 )
 class PokemonFavoritesRoute extends GoRouteData {
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const PokemonFavoritesPage();
-  }
+  Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const PokemonFavoritesPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
 }
 
 class PokemonFavoritesDetailRoute extends GoRouteData {
   PokemonFavoritesDetailRoute({required this.id});
   final int id;
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return PokemonDetailPage(id: id);
-  }
+  Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: PokemonDetailPage(id: id),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
 }
