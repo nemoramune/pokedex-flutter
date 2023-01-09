@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/components/favorite_button.dart';
+import 'package:pokedex/components/pokemon/pokemon_type_chips.dart';
 import 'package:pokedex/components/progress_view.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_type_chips.dart';
-import 'package:pokedex/features/pokemon/pokemon_detail_view_model.dart';
 import 'package:pokedex/hooks/use_strings.dart';
+
+import 'pokemon_detail_view_model.dart';
 
 class PokemonDetailPage extends HookConsumerWidget {
   const PokemonDetailPage({required this.id, super.key});

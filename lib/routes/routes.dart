@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_detail_page.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_favorites_page.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_list_page.dart';
+import 'package:pokedex/features/pokemon_detail/pokemon_detail_page.dart';
+import 'package:pokedex/features/pokemon_favorites/pokemon_favorites_page.dart';
+import 'package:pokedex/features/pokemon_list/pokemon_list_page.dart';
 
 part 'routes.g.dart';
 

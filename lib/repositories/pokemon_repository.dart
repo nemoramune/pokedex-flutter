@@ -8,7 +8,7 @@ import 'package:pokedex/entity/pokemon_entity.dart';
 import 'package:pokedex/model/pokemon_detail.dart';
 import 'package:pokedex/model/pokemon_list_item.dart';
 
-import '../../utils/result.dart';
+import '../utils/result.dart';
 
 abstract class PokemonRepository {
   Future<Result<List<PokemonListItem>>> getPokemonList(

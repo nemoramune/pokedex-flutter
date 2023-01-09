@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokedex/components/progress_view.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_list_item_view.dart';
 import 'package:pokedex/hooks/use_paging_controller.dart';
 import 'package:pokedex/hooks/use_strings.dart';
 import 'package:pokedex/model/pokemon_list_item.dart';
 
 import '../../../components/error_view.dart';
+import 'pokemon_list_item_view.dart';
 
 class PokemonListView extends HookConsumerWidget {
   const PokemonListView({

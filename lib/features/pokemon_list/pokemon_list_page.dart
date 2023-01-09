@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pokedex/features/pokemon/components/pokemon_list_view.dart';
-import 'package:pokedex/features/pokemon/pokemon_list_view_model.dart';
+import 'package:pokedex/components/pokemon/pokemon_list_view.dart';
 import 'package:pokedex/hooks/use_strings.dart';
 import 'package:pokedex/routes/routes.dart';
+
+import 'pokemon_list_view_model.dart';
 
 class PokemonListPage extends HookConsumerWidget {
   const PokemonListPage({super.key});
