@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pokedex/components/scaffold_with_nav_bar.dart';
 import 'package:pokedex/features/pokemon/entity/pokemon_entity.dart';
 import 'package:pokedex/hooks/use_strings.dart';
 import 'package:pokedex/i18n/strings.g.dart';
@@ -19,9 +20,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final _router = GoRouter(
-    routes: $appRoutes,
-  );
+  final _router = GoRouter(routes: [
+    ShellRoute(
+      routes: $appRoutes,
+      builder: (context, state, child) => ScaffoldWithNavBar(child: child),
+    ),
+  ]);
 
   @override
   Widget build(BuildContext context) {
