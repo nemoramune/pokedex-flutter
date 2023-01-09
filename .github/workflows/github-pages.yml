@@ -33,7 +33,7 @@ jobs:
       - run: flutter build web --web-renderer html --base-href /${{ steps.version.outputs.repository }}/
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: build
+          path: build/web
   deploy:
     needs: build
     permissions:
