@@ -11,22 +11,38 @@ import 'package:pokedex/hooks/use_strings.dart';
 import '../../../components/error_view.dart';
 
 class PokemonListView extends HookConsumerWidget {
-  const PokemonListView({super.key});
+  const PokemonListView({
+    required this.list,
+    required this.isLast,
+    required this.error,
+    required this.loadMore,
+    required this.onPressedFavorite,
+    required this.refresh,
+    super.key,
+  });
+
+  final List<PokemonListItem>? list;
+  final bool? isLast;
+  final dynamic error;
+  final void Function() loadMore;
+  final void Function(PokemonListItem item) onPressedFavorite;
+  final void Function() refresh;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = useStrings();
     final viewModel = ref.watch(pokemonListViewModelProvider.notifier);
-    final state = ref.watch(pokemonListViewModelProvider);
     final pagingController = useStateLessPagingController(
-      itemList: state.valueOrNull?.list,
-      isLast: state.valueOrNull?.isLoadedToLast,
-      loadMore: viewModel.fetch,
-      error: state.error,
+      itemList: list,
+      isLast: isLast,
+      loadMore: loadMore,
+      error: error,
     );
 
     return RefreshIndicator(
-      onRefresh: () => viewModel.refresh(),
+      onRefresh: () async {
+        refresh();
+      },
       child: PagedListView.separated(
         pagingController: pagingController,
         separatorBuilder: (context, index) => const Divider(),
@@ -35,12 +51,12 @@ class PokemonListView extends HookConsumerWidget {
               data: item, onPressedFavorite: (item) => viewModel.favorite(item)),
           firstPageErrorIndicatorBuilder: (_) => ErrorView(
             text: strings.networkError,
-            retry: viewModel.refresh,
+            retry: refresh,
           ),
           newPageProgressIndicatorBuilder: (_) => const ProgressView(),
           noItemsFoundIndicatorBuilder: (_) => ErrorView(
             text: strings.pokemonListEmptyError,
-            retry: viewModel.refresh,
+            retry: refresh,
           ),
         ),
       ),
