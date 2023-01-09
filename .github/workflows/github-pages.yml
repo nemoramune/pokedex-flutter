@@ -28,6 +28,8 @@ jobs:
           cache: true
       - run: flutter --version
       - run: flutter pub get
+      - run: flutter pub run build_runner
+      - run: flutter pub run slang
       - run: flutter build web --web-renderer html --base-href /${{ steps.version.outputs.repository }}/
 
       - name: Deploy
