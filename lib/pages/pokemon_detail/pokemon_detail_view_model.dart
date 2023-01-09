@@ -1,6 +1,6 @@
 import 'package:pokedex/model/pokemon_detail.dart';
-import 'package:pokedex/providers/pokemon_repository_provider.dart';
 import 'package:pokedex/repositories/pokemon_repository.dart';
+import 'package:pokedex/repositories/pokemon_repository_provider.dart';
 import 'package:pokedex/states/pokemon_detail_state.dart';
 import 'package:pokedex/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

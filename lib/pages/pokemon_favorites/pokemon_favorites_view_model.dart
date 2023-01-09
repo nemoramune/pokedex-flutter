@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:pokedex/model/pokemon_list_item.dart';
-import 'package:pokedex/providers/pokemon_repository_provider.dart';
 import 'package:pokedex/repositories/pokemon_repository.dart';
+import 'package:pokedex/repositories/pokemon_repository_provider.dart';
 import 'package:pokedex/states/pokemon_list_state.dart';
 import 'package:pokedex/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

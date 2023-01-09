@@ -1,6 +1,6 @@
-import 'package:pokedex/providers/pokemon_api_provider.dart';
-import 'package:pokedex/providers/pokemon_entity_box_provider.dart';
-import 'package:pokedex/providers/pokemon_favorite_box_provider.dart';
+import 'package:pokedex/api/pokemon_api_provider.dart';
+import 'package:pokedex/database/pokemon_entity_box_provider.dart';
+import 'package:pokedex/database/pokemon_favorite_box_provider.dart';
 import 'package:pokedex/repositories/pokemon_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
