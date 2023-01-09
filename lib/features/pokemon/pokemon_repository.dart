@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,6 +12,10 @@ import '../../utils/result.dart';
 
 abstract class PokemonRepository {
   Future<Result<List<PokemonListItem>>> getPokemonList(
+    int offset,
+    int limit,
+  );
+  Future<Result<List<PokemonListItem>>> getFavoritePokemonList(
     int offset,
     int limit,
   );
@@ -39,6 +45,23 @@ class PokemonRepositoryImpl implements PokemonRepository {
         test: (error) => error.response?.statusCode == 404,
       ).thenNullable(),
     );
+    return Future.wait(requests)
+        .then((list) => list.whereType<PokemonListItem>().toList())
+        .toResult();
+  }
+
+  @override
+  Future<Result<List<PokemonListItem>>> getFavoritePokemonList(int offset, int limit) {
+    final favoriteIds = _pokemonFavoriteBox.toMap()..removeWhere((key, value) => !value);
+    final start = min(offset, favoriteIds.length);
+    final end = min(offset + limit, favoriteIds.length);
+    final requests = favoriteIds.keys.whereType<int>().toList().sublist(start, end).map(
+          (id) => awaitCatching<PokemonListItem?, DioError>(
+            () => _getPokemonListItem(id),
+            onError: () => null,
+            test: (error) => error.response?.statusCode == 404,
+          ).thenNullable(),
+        );
     return Future.wait(requests)
         .then((list) => list.whereType<PokemonListItem>().toList())
         .toResult();
