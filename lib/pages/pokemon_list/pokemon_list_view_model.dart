@@ -29,7 +29,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     await _emitLoadingState();
     final currentStateValue = state.valueOrNull ?? const PokemonListState();
     int offset = isRefresh ? 0 : currentStateValue.offset;
-    final list = currentStateValue.list;
+    final list = currentStateValue.list ?? [];
     final result = await ref.read(getPokemonListProvider(offset, limit).future);
     result
         .onSuccess(
@@ -55,7 +55,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     if (currentStateValue == null) return;
     final result = await ref.read(getPokemonListItemProvider(id).future);
     result.onSuccess((resultItem) {
-      final list = currentStateValue.list.toList();
+      final list = currentStateValue.list?.toList() ?? [];
       final index = list.indexWhere((item) => item.id == id);
       if (index == -1) return;
       list[index] = resultItem;
