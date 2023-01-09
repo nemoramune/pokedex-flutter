@@ -31,6 +31,7 @@ jobs:
       - run: flutter pub run build_runner build
       - run: flutter pub run slang
       - run: flutter build web --web-renderer html --base-href /${{ steps.version.outputs.repository }}/
+
       - name: Deploy
         - uses: actions/upload-pages-artifact@v1
           with:
