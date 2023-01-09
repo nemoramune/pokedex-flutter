@@ -2,5 +2,8 @@ appName: PokeDex
 retry: Retry
 networkError: ネットワークエラーが発生しました
 pokemonListEmptyError: ポケモンのデータが取得できませんでした
+favoriteListEmptyError: お気に入りのポケモンがいません
 height: "高さ: $height"
 weight: "重さ: $weight"
+favorite: お気に入り
+index: 図鑑
