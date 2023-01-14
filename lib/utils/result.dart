@@ -17,6 +17,13 @@ extension KotlinLikeResult<T> on Result<T> {
     return null;
   }
 
+  T get getOrThrow {
+    final result = this;
+    if (result is Success<T>) return result.value;
+    if (result is Failure<T>) throw result.error;
+    throw TypeError();
+  }
+
   Result<T> onSuccess(void Function(T value) action) {
     final value = getOrNull;
     if (value != null) action(value);
