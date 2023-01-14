@@ -11,8 +11,9 @@ part 'pokemon_detail_view_model.g.dart';
 class PokemonDetailViewModel extends _$PokemonDetailViewModel {
   @override
   FutureOr<PokemonDetailState> build(int id) async {
-    _fetch(id);
-    return const PokemonDetailState();
+    final result = await ref.read(getPokemonDetailProvider(id).future);
+    final data = result.getOrThrow;
+    return PokemonDetailState(data: data);
   }
 
   Future<void> favorite(PokemonDetail item) async {
@@ -26,21 +27,7 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
     }).onFailure(_onError);
   }
 
-  Future<void> _fetch(int id) async {
-    await _emitLoadingState();
-    final currentStateValue = state.valueOrNull ?? const PokemonDetailState();
-    final result = await ref.read(getPokemonDetailProvider(id).future);
-    result
-        .onSuccess((result) =>
-            state = AsyncData(currentStateValue.copyWith(data: result)).copyWithPrevious(state))
-        .onFailure(_onError);
-  }
-
   void _onError(Object error, StackTrace stackTrace) {
     state = AsyncError<PokemonDetailState>(error, stackTrace).copyWithPrevious(state);
   }
-
-  Future<void> _emitLoadingState() => Future(() {
-        state = const AsyncLoading<PokemonDetailState>().copyWithPrevious(state);
-      });
 }
