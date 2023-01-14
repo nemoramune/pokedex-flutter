@@ -16,7 +16,7 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
     return PokemonDetailState(data: data);
   }
 
-  Future<void> favorite(PokemonDetail item) async {
+  Future<void> toggleFavorite(PokemonDetail item) async {
     final result = await ref.read(getPokemonDetailWithFavoriteToggledProvider(item.id).future);
     result.onSuccess(_onSuccess).onFailure(_onFailure);
   }

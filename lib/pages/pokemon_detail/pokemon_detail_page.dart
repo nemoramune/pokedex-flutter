@@ -70,7 +70,7 @@ class _PokemonDetailView extends HookConsumerWidget {
               FavoriteButton(
                 isFavorite: data.isFavorite,
                 onPressedFavorite: () {
-                  viewModel.favorite(data);
+                  viewModel.toggleFavorite(data);
                 },
               )
             ],
