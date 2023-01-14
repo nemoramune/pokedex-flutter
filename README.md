@@ -14,7 +14,7 @@ Flutterのライブラリやデザインパターンを学ぶ上で作ったア�
 | dio                        | Httpクライアント インターネットの通信をいい感じにしてくれる                 |
 | retrofit                   | dioをさらに使いやすくするラッパーライブラリ AndroidのRetrofitと同じ感じだよ |
 | freezed_annotation         | immutableなデータクラスを作ってくれるライブラリ KotlinのDataClassみたいなの |
-| infinite_scroll_pagination | 無限スクロールとかページネーションを簡単に作れるライブラリ                  |
-| slang                      | テキストをいい感じに管理してくれる flutter pub run slang をする必要があるよ |
 | hive                       | NoSQLなデータベースだよ 使いやすいね 動作が早いらしいよ                     |
 | go_router                  | Flutterのルーティングをいい感じにしてくれるライブラリ                       |
+| infinite_scroll_pagination | 無限スクロールとかページネーションを簡単に作れるライブラリ                  |
+| slang                      | テキストをいい感じに管理してくれる flutter pub run slang をする必要があるよ |
