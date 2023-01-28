@@ -10,6 +10,7 @@ part 'routes.g.dart';
   path: '/',
   routes: [TypedGoRoute<PokemonListDetailRoute>(path: 'pokemon/:id')],
 )
+@immutable
 class PokemonListRoute extends GoRouteData {
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
@@ -22,8 +23,9 @@ class PokemonListRoute extends GoRouteData {
       );
 }
 
+@immutable
 class PokemonListDetailRoute extends GoRouteData {
-  PokemonListDetailRoute({required this.id});
+  const PokemonListDetailRoute({required this.id});
   final int id;
 
   @override
@@ -41,6 +43,7 @@ class PokemonListDetailRoute extends GoRouteData {
   path: '/favorites',
   routes: [TypedGoRoute<PokemonFavoritesDetailRoute>(path: ':id')],
 )
+@immutable
 class PokemonFavoritesRoute extends GoRouteData {
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(
@@ -53,8 +56,9 @@ class PokemonFavoritesRoute extends GoRouteData {
       );
 }
 
+@immutable
 class PokemonFavoritesDetailRoute extends GoRouteData {
-  PokemonFavoritesDetailRoute({required this.id});
+  const PokemonFavoritesDetailRoute({required this.id});
   final int id;
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) => CustomTransitionPage(

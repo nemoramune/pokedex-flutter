@@ -39,9 +39,7 @@ class MyApp extends StatelessWidget {
       ),
       supportedLocales: LocaleSettings.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-      routeInformationProvider: _router.routeInformationProvider,
+      routerConfig: _router,
     );
   }
 }
