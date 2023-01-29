@@ -45,7 +45,6 @@ class PokemonListItemView extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 1,
-                  // constraints: const BoxConstraints(maxWidth: 220),
                   child: _PokemonListItemInfo(data: data),
                 ),
                 FavoriteButton(
