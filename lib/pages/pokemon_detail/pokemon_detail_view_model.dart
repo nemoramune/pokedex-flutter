@@ -1,4 +1,4 @@
-import 'package:pokedex/model/pokemon_detail.dart';
+import 'package:pokedex/model/pokemon.dart';
 import 'package:pokedex/states/pokemon_detail_state.dart';
 import 'package:pokedex/usecases/get_pokemon_detail.dart';
 import 'package:pokedex/usecases/get_pokemon_detail_with_favorite_toggled.dart';
@@ -16,12 +16,12 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
     return PokemonDetailState(data: data);
   }
 
-  Future<void> toggleFavorite(PokemonDetail item) async {
+  Future<void> toggleFavorite(Pokemon item) async {
     final result = await ref.read(getPokemonDetailWithFavoriteToggledProvider(item.id).future);
     result.onSuccess(_onSuccess).onFailure(_onFailure);
   }
 
-  void _onSuccess(PokemonDetail data) {
+  void _onSuccess(Pokemon data) {
     final previousStateValue = state.valueOrNull ?? const PokemonDetailState();
     final stateValue = previousStateValue.copyWith(data: data);
     state = AsyncValue.data(stateValue).copyWithPrevious(state);

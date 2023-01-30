@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokedex/api/pokemon_api.dart';
 import 'package:pokedex/entity/pokemon_entity.dart';
-import 'package:pokedex/model/pokemon_detail.dart';
+import 'package:pokedex/model/pokemon.dart';
 import 'package:pokedex/model/pokemon_list_item.dart';
 
 import '../utils/result.dart';
@@ -21,7 +21,7 @@ abstract class PokemonRepository {
   );
   Future<Result<PokemonListItem>> getPokemonListItem(int id);
 
-  Future<Result<PokemonDetail>> getPokemonDetail(int id);
+  Future<Result<Pokemon>> getPokemonDetail(int id);
 
   bool isFavorite(int id);
   Future<Result<void>> favoritePokemon(int id);
@@ -81,8 +81,8 @@ class PokemonRepositoryImpl implements PokemonRepository {
   Future<Result<PokemonListItem>> getPokemonListItem(int id) => _getPokemonListItem(id).toResult();
 
   @override
-  Future<Result<PokemonDetail>> getPokemonDetail(int id) => _getPokemonEntity(id)
-      .then((entity) => PokemonDetail.fromEntity(
+  Future<Result<Pokemon>> getPokemonDetail(int id) => _getPokemonEntity(id)
+      .then((entity) => Pokemon.fromEntity(
             entity: entity,
             isFavorite: _pokemonFavoriteBox.get(id, defaultValue: false),
           ))
