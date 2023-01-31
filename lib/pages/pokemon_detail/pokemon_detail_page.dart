@@ -7,8 +7,7 @@ import 'package:pokedex/components/favorite_button.dart';
 import 'package:pokedex/components/pokemon/pokemon_type_chips.dart';
 import 'package:pokedex/components/progress_view.dart';
 import 'package:pokedex/hooks/use_strings.dart';
-
-import 'pokemon_detail_view_model.dart';
+import 'package:pokedex/pages/pokemon_detail/pokemon_detail_provider.dart';
 
 class PokemonDetailPage extends StatelessWidget {
   const PokemonDetailPage({required this.id, super.key});
@@ -28,10 +27,9 @@ class _PokemonDetailView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = useStrings();
-    final viewModel = ref.watch(pokemonDetailViewModelProvider(id).notifier);
-    final state = ref.watch(pokemonDetailViewModelProvider(id));
-    final data = state.valueOrNull?.data;
-    final error = state.error;
+    final detail = ref.watch(pokemonProvider(id));
+    final data = detail.valueOrNull;
+    final error = detail.error;
     if (error != null) return ErrorView(text: strings.networkError);
     if (data == null) return const ProgressView();
     return Column(
@@ -70,7 +68,7 @@ class _PokemonDetailView extends HookConsumerWidget {
               FavoriteButton(
                 isFavorite: data.isFavorite,
                 onPressedFavorite: () {
-                  viewModel.toggleFavorite(data);
+                  ref.read(toggleFavoritePokemonProvider(id));
                 },
               )
             ],
