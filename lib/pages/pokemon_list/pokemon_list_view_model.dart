@@ -1,8 +1,8 @@
-import 'package:pokedex/model/pokemon_list_item.dart';
+import 'package:pokedex/model/pokemon.dart';
 import 'package:pokedex/states/pokemon_list_state.dart';
 import 'package:pokedex/usecases/get_favorite_event_stream.dart';
+import 'package:pokedex/usecases/get_pokemon.dart';
 import 'package:pokedex/usecases/get_pokemon_list.dart';
-import 'package:pokedex/usecases/get_pokemon_list_item.dart';
 import 'package:pokedex/usecases/toggle_favorite_pokemon.dart';
 import 'package:pokedex/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -42,7 +42,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
         .onFailure(_onError);
   }
 
-  Future<void> toggleFavorite(PokemonListItem item) async {
+  Future<void> toggleFavorite(Pokemon item) async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return;
     await ref
@@ -53,7 +53,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   Future<void> _updateFavorite(int id) async {
     final currentStateValue = state.valueOrNull;
     if (currentStateValue == null) return;
-    final result = await ref.read(getPokemonListItemProvider(id).future);
+    final result = await ref.read(getPokemonProvider(id).future);
     result.onSuccess((resultItem) {
       final list = currentStateValue.list?.toList() ?? [];
       final index = list.indexWhere((item) => item.id == id);
@@ -64,7 +64,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   }
 
   void _emit({
-    required List<PokemonListItem> list,
+    required List<Pokemon> list,
     int? offset,
     bool? isLoadedToLast,
   }) {

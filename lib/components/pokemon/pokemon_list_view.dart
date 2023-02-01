@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokedex/components/progress_view.dart';
 import 'package:pokedex/hooks/use_paging_controller.dart';
 import 'package:pokedex/hooks/use_strings.dart';
-import 'package:pokedex/model/pokemon_list_item.dart';
+import 'package:pokedex/model/pokemon.dart';
 
 import '../../../components/error_view.dart';
 import 'pokemon_list_item_view.dart';
@@ -23,12 +23,12 @@ class PokemonListView extends HookConsumerWidget {
     super.key,
   });
 
-  final List<PokemonListItem>? list;
+  final List<Pokemon>? list;
   final bool? isLast;
   final dynamic error;
   final void Function() loadMore;
-  final void Function(PokemonListItem item) onTapListItem;
-  final void Function(PokemonListItem item) onPressedFavorite;
+  final void Function(Pokemon item) onTapListItem;
+  final void Function(Pokemon item) onPressedFavorite;
   final void Function() refresh;
   final String emptyErrorMessage;
   final bool enableRetryButton;
@@ -50,7 +50,7 @@ class PokemonListView extends HookConsumerWidget {
       child: PagedListView.separated(
         pagingController: pagingController,
         separatorBuilder: (context, index) => const Divider(),
-        builderDelegate: PagedChildBuilderDelegate<PokemonListItem>(
+        builderDelegate: PagedChildBuilderDelegate<Pokemon>(
           itemBuilder: (context, item, index) => PokemonListItemView(
             data: item,
             onTapListItem: onTapListItem,

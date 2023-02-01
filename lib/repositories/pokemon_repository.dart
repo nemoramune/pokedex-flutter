@@ -6,22 +6,20 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokedex/api/pokemon_api.dart';
 import 'package:pokedex/entity/pokemon_entity.dart';
 import 'package:pokedex/model/pokemon.dart';
-import 'package:pokedex/model/pokemon_list_item.dart';
 
 import '../utils/result.dart';
 
 abstract class PokemonRepository {
-  Future<Result<List<PokemonListItem>>> getPokemonList(
+  Future<Result<List<Pokemon>>> getPokemonList(
     int offset,
     int limit,
   );
-  Future<Result<List<PokemonListItem>>> getFavoritePokemonList(
+  Future<Result<List<Pokemon>>> getFavoritePokemonList(
     int offset,
     int limit,
   );
-  Future<Result<PokemonListItem>> getPokemonListItem(int id);
 
-  Future<Result<Pokemon>> getPokemonDetail(int id);
+  Future<Result<Pokemon>> getPokemon(int id);
 
   bool isFavorite(int id);
   Future<Result<void>> favoritePokemon(int id);
@@ -37,35 +35,31 @@ class PokemonRepositoryImpl implements PokemonRepository {
   PokemonRepositoryImpl(this._pokemonApi, this._pokemonEntityBox, this._pokemonFavoriteBox);
 
   @override
-  Future<Result<List<PokemonListItem>>> getPokemonList(int offset, int limit) {
-    final requests = List<Future<PokemonListItem?>>.generate(
+  Future<Result<List<Pokemon>>> getPokemonList(int offset, int limit) {
+    final requests = List<Future<Pokemon?>>.generate(
       limit,
-      (index) => awaitCatching<PokemonListItem?, DioError>(
-        () => _getPokemonListItem(offset + index + 1),
+      (index) => awaitCatching<Pokemon?, DioError>(
+        () => _getPokemonFuture(offset + index + 1),
         onError: () => null,
         test: (error) => error.response?.statusCode == 404,
       ).thenNullable(),
     );
-    return Future.wait(requests)
-        .then((list) => list.whereType<PokemonListItem>().toList())
-        .toResult();
+    return Future.wait(requests).then((list) => list.whereType<Pokemon>().toList()).toResult();
   }
 
   @override
-  Future<Result<List<PokemonListItem>>> getFavoritePokemonList(int offset, int limit) {
+  Future<Result<List<Pokemon>>> getFavoritePokemonList(int offset, int limit) {
     final favoriteIds = _pokemonFavoriteBox.toMap()..removeWhere((key, value) => !value);
     final start = min(offset, favoriteIds.length);
     final end = min(offset + limit, favoriteIds.length);
     final requests = favoriteIds.keys.whereType<int>().toList().sublist(start, end).map(
-          (id) => awaitCatching<PokemonListItem?, DioError>(
-            () => _getPokemonListItem(id),
+          (id) => awaitCatching<Pokemon?, DioError>(
+            () => _getPokemonFuture(id),
             onError: () => null,
             test: (error) => error.response?.statusCode == 404,
           ).thenNullable(),
         );
-    return Future.wait(requests)
-        .then((list) => list.whereType<PokemonListItem>().toList())
-        .toResult();
+    return Future.wait(requests).then((list) => list.whereType<Pokemon>().toList()).toResult();
   }
 
   @override
@@ -78,18 +72,10 @@ class PokemonRepositoryImpl implements PokemonRepository {
   Future<Result<void>> unfavoritePokemon(int id) => _pokemonFavoriteBox.put(id, false).toResult();
 
   @override
-  Future<Result<PokemonListItem>> getPokemonListItem(int id) => _getPokemonListItem(id).toResult();
+  Future<Result<Pokemon>> getPokemon(int id) => _getPokemonFuture(id).toResult();
 
-  @override
-  Future<Result<Pokemon>> getPokemonDetail(int id) => _getPokemonEntity(id)
-      .then((entity) => Pokemon.fromEntity(
-            entity: entity,
-            isFavorite: _pokemonFavoriteBox.get(id, defaultValue: false),
-          ))
-      .toResult();
-
-  Future<PokemonListItem> _getPokemonListItem(int id) =>
-      _getPokemonEntity(id).then((entity) => PokemonListItem.fromEntity(
+  Future<Pokemon> _getPokemonFuture(int id) =>
+      _getPokemonEntity(id).then((entity) => Pokemon.fromEntity(
           entity: entity, isFavorite: _pokemonFavoriteBox.get(id, defaultValue: false)));
 
   Future<PokemonEntity> _getPokemonEntity(int id) async {
