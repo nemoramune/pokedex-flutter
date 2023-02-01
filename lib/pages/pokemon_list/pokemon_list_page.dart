@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/components/pokemon/pokemon_list_view.dart';
 import 'package:pokedex/hooks/use_strings.dart';
+import 'package:pokedex/pages/pokemon_detail/pokemon_detail_provider.dart';
 import 'package:pokedex/routes/routes.dart';
-
-import 'pokemon_list_view_model.dart';
 
 class PokemonListPage extends HookConsumerWidget {
   const PokemonListPage({super.key});
@@ -12,18 +11,20 @@ class PokemonListPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = useStrings();
-    final viewModel = ref.watch(pokemonListViewModelProvider.notifier);
-    final state = ref.watch(pokemonListViewModelProvider);
+    final list = ref.watch(pokemonListProvider);
+    final isLast = ref.watch(isPokemonListLast);
+    loadMore() =>
+        WidgetsBinding.instance.addPostFrameCallback(((_) => ref.read(loadListNextPageProvider)()));
     return Scaffold(
       appBar: AppBar(title: Text(strings.appName)),
       body: PokemonListView(
-        list: state.valueOrNull?.list,
-        isLast: state.valueOrNull?.isLoadedToLast,
-        error: state.error,
-        loadMore: viewModel.fetch,
+        list: list.valueOrNull,
+        isLast: isLast,
+        error: list.error,
+        loadMore: loadMore,
         onTapListItem: (item) => PokemonListDetailRoute(id: item.id).go(context),
-        onPressedFavorite: viewModel.toggleFavorite,
-        refresh: viewModel.refresh,
+        onPressedFavorite: (item) => ref.read(toggleFavoritePokemonProvider(item.id)),
+        refresh: () => ref.refresh(pokemonListProvider),
         emptyErrorMessage: strings.pokemonListEmptyError,
       ),
     );
