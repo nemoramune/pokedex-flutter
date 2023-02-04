@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,12 +13,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pokemon_detail_provider.g.dart';
 
-// StateProviderは外部からstateを更新できるがNotifierは外部からstateを更新することはできない
-final _pokemonListSizeProvider = StateProvider<int>((_) => 0);
-
-final isPokemonListLast = StateProvider.autoDispose<bool>((_) => false);
-
 const _limit = 20;
+
+// StateProviderは外部からstateを更新できるがNotifierは外部からstateを更新することはできない
+final _pokemonListSizeProvider = StateProvider<int>((_) => _limit);
+
+final isPokemonListLastProvider = StateProvider.autoDispose<bool>((_) => false);
 
 @riverpod
 Function loadListNextPage(LoadListNextPageRef ref) =>
@@ -27,29 +29,59 @@ Future<List<Pokemon>> pokemonList(PokemonListRef ref) async {
   final pokemonListSize = ref.watch(_pokemonListSizeProvider);
   final favorites = await ref.watch(_favoritesStreamProvider.future);
   final futures = List.generate(
-      pokemonListSize,
-      (index) => awaitCatching<PokemonEntity?, DioError>(
-            () => ref.read(pokemonEntityProvider(index + 1).future),
-            onError: () => null,
-            test: (error) => error.response?.statusCode == 404,
-          ).thenNullable());
-  return Future.wait(futures).then((list) => list.whereType<PokemonEntity>().toList()).then(
-      (list) => list
-          .map((entity) =>
-              Pokemon.fromEntity(entity: entity, isFavorite: favorites[entity.id] ?? false))
-          .toList());
+    pokemonListSize,
+    (index) => awaitCatching<PokemonEntity?, DioError>(
+      () => ref.read(pokemonEntityProvider(index + 1).future),
+      onError: () => null,
+      test: (error) => error.response?.statusCode == 404,
+    ).thenNullable(),
+  );
+  final list =
+      await Future.wait(futures).then((list) => list.whereType<PokemonEntity>().toList()).then(
+            (list) => list
+                .map((entity) =>
+                    Pokemon.fromEntity(entity: entity, isFavorite: favorites[entity.id] ?? false))
+                .toList(),
+          );
+  ref.read(isPokemonListLastProvider.notifier).update((state) => list.length < pokemonListSize);
+  return list;
+}
+
+final _pokemonFavoritesSizeProvider = StateProvider<int>((_) => _limit);
+
+final isPokemonFavoritesLastProvider = StateProvider.autoDispose<bool>((_) => false);
+
+@riverpod
+Function loadFavoritesNextPage(LoadFavoritesNextPageRef ref) =>
+    () => ref.read(_pokemonFavoritesSizeProvider.notifier).update((state) => state + _limit);
+
+@riverpod
+Future<List<Pokemon>> pokemonFavorites(PokemonListRef ref) async {
+  final favoritesSize = ref.watch(_pokemonFavoritesSizeProvider);
+  final favorites = await ref.watch(_favoritesStreamProvider.future);
+  final favoriteIds = favorites..removeWhere((key, value) => !value);
+  final end = min(favoritesSize, favoriteIds.length);
+  final futures = favoriteIds.keys.whereType<int>().toList().sublist(0, end).map(
+        (id) => awaitCatching<PokemonEntity?, DioError>(
+          () => ref.read(pokemonEntityProvider(id).future),
+          onError: () => null,
+          test: (error) => error.response?.statusCode == 404,
+        ).thenNullable(),
+      );
+  final list =
+      await Future.wait(futures).then((list) => list.whereType<PokemonEntity>().toList()).then(
+            (list) => list
+                .map((entity) =>
+                    Pokemon.fromEntity(entity: entity, isFavorite: favorites[entity.id] ?? false))
+                .toList(),
+          );
+  ref.read(isPokemonFavoritesLastProvider.notifier).update((state) => list.length < favoritesSize);
+  return list;
 }
 
 @riverpod
 Future<bool> isPokemonFavorite(IsPokemonFavoriteRef ref, int id) =>
     ref.watch(_favoritesStreamProvider.selectAsync((data) => data[id] ?? false));
-
-// final _isPokemonFavoriteProvider = StreamProvider.autoDispose.family<bool, int>((ref, id) async* {
-//   final box = await ref.watch(_favoritesStreamProvider.selectAsync((data) => data[id] ?? false));
-//   final stream = box.watch(key: id).map((event) => event.value).cast<bool>();
-//   yield box.get(id) ?? false;
-//   yield* stream;
-// });
 
 final _favoritesStreamProvider = StreamProvider.autoDispose((ref) async* {
   final box = await ref.watch(pokemonFavoriteBoxProvider.future);

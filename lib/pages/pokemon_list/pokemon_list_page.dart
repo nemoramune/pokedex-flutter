@@ -12,7 +12,7 @@ class PokemonListPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = useStrings();
     final list = ref.watch(pokemonListProvider);
-    final isLast = ref.watch(isPokemonListLast);
+    final isLast = ref.watch(isPokemonListLastProvider);
     loadMore() =>
         WidgetsBinding.instance.addPostFrameCallback(((_) => ref.read(loadListNextPageProvider)()));
     return Scaffold(
