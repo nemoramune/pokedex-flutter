@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
@@ -61,6 +62,14 @@ Future<Result<T>> awaitCatching<T, E extends Object>(
 
 extension FutureResult<T> on Future<T> {
   Future<Result<T>> toResult() => awaitCatching(() => this);
+}
+
+extension DioFuture<T> on Future<T> {
+  Future<T?> onNotFoundErrorToNull() => awaitCatching<T?, DioError>(
+        () => this,
+        onError: () => null,
+        test: (error) => error.response?.statusCode == 404,
+      ).thenNullable();
 }
 
 // future.onError バグっているかもしれない
