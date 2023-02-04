@@ -44,10 +44,12 @@ PagingController<void, ItemType> useStateLessPagingController<ItemType>({
   List<Object?>? keys,
 }) =>
     usePagingController<bool, ItemType>(
-      firstPageKey: false,
+      firstPageKey: true,
       itemList: itemList,
       nextPageKey: isLast ?? false ? null : false,
-      addPageRequestListener: (_) => loadMore(),
+      addPageRequestListener: (isFirstPage) {
+        if (!isFirstPage) loadMore();
+      },
       error: error,
       keys: keys,
     );
