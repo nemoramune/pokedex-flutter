@@ -18,3 +18,8 @@ Flutterのライブラリやデザインパターンを学ぶ上で作ったア�
 | go_router                  | Flutterのルーティングをいい感じにしてくれるライブラリ                       |
 | infinite_scroll_pagination | 無限スクロールとかページネーションを簡単に作れるライブラリ                  |
 | slang                      | テキストをいい感じに管理してくれる flutter pub run slang をする必要があるよ |
+
+なんとなくこんな感じのフローだよ
+基本的にPokeDexにデータがあってそれを編集していく感じ
+
+![pokemon-flow](https://user-images.githubusercontent.com/109070415/216810386-be8b7aa6-7100-4b78-a88e-098e877663bc.svg)
