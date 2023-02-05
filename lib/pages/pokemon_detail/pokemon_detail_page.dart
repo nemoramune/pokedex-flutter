@@ -6,8 +6,9 @@ import 'package:pokedex/components/error_view.dart';
 import 'package:pokedex/components/favorite_button.dart';
 import 'package:pokedex/components/pokemon/pokemon_type_chips.dart';
 import 'package:pokedex/components/progress_view.dart';
+import 'package:pokedex/dataflow/favorite.dart';
+import 'package:pokedex/dataflow/pokemon_detail.dart';
 import 'package:pokedex/hooks/use_strings.dart';
-import 'package:pokedex/pages/pokemon_detail/pokemon_detail_provider.dart';
 
 class PokemonDetailPage extends StatelessWidget {
   const PokemonDetailPage({required this.id, super.key});

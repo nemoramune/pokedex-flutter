@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/components/pokemon/pokemon_list_view.dart';
+import 'package:pokedex/dataflow/favorite.dart';
+import 'package:pokedex/dataflow/pokemon_favorites.dart';
 import 'package:pokedex/hooks/use_strings.dart';
-import 'package:pokedex/pages/pokemon_detail/pokemon_detail_provider.dart';
 import 'package:pokedex/routes/routes.dart';
 
 class PokemonFavoritesPage extends HookConsumerWidget {
