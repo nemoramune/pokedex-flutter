@@ -18,17 +18,17 @@ Function loadListNextPage(LoadListNextPageRef ref) =>
     () => ref.read(_pokemonListSizeProvider.notifier).update((state) => state + _limit);
 
 @riverpod
-Future<int> fetchedPokemonListSize(FetchedPokemonListSizeRef ref) async {
+Future<List<int>> fetchedPokemonListIds(FetchedPokemonListIdsRef ref) async {
   final pokemonListSize = ref.watch(_pokemonListSizeProvider);
   final ids = List.generate(pokemonListSize, (index) => index + 1);
   await ref.read(fetchPokemonDataProvider(ids).future);
-  return pokemonListSize;
+  return ids;
 }
 
 @riverpod
 Future<List<Pokemon>> pokemonList(PokemonListRef ref) async {
-  final pokemonListSize = await ref.watch(fetchedPokemonListSizeProvider.future);
-  final ids = List.generate(pokemonListSize, (index) => index + 1);
+  final pokemonListSize = ref.read(_pokemonListSizeProvider);
+  final ids = await ref.watch(fetchedPokemonListIdsProvider.future);
   final list = await ref.watch(pokeDexProvider
       .selectAsync((data) => ids.map((id) => data[id]).whereType<Pokemon>().toList()));
   ref.read(isPokemonListLastProvider.notifier).update((state) => list.length < pokemonListSize);
