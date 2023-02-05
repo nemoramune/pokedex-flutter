@@ -9,15 +9,16 @@ part 'pokedex.g.dart';
 
 final _pokedexCacheProvider = StateProvider<Map<int, Pokemon>>((_) => {});
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<Map<int, Pokemon>> pokeDex(PokeDexRef ref) async {
   final cache = ref.watch(_pokedexCacheProvider);
-  final favoriteMap = await ref.watch(favoritesStreamProvider.future);
-  favoriteMap.forEach((id, isFavorite) {
-    final pokemon = cache[id];
-    if (pokemon == null || pokemon.isFavorite == isFavorite) return;
-    cache[id] = pokemon.copyWith(isFavorite: isFavorite);
-  });
+  final favoriteMap = await ref.watch(favoritesStreamProvider.selectAsync(
+      (data) => data.entries.where((element) => element.value != cache[element.key]?.isFavorite)));
+  for (var entry in favoriteMap) {
+    final pokemon = cache[entry.key];
+    if (pokemon == null || pokemon.isFavorite == entry.value) continue;
+    cache[entry.key] = pokemon.copyWith(isFavorite: entry.value);
+  }
   ref.read(_pokedexCacheProvider.notifier).update((_) => cache);
   return cache;
 }

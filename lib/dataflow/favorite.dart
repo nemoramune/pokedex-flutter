@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'favorite.g.dart';
 
-final favoritesStreamProvider = StreamProvider((ref) async* {
+final favoritesStreamProvider = StreamProvider.autoDispose((ref) async* {
   final box = await ref.read(pokemonFavoriteBoxProvider.future);
   final stream = box.watch().map((event) => box.toMap());
   yield box.toMap();
