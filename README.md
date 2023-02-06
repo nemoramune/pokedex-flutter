@@ -22,4 +22,4 @@ Flutterのライブラリやデザインパターンを学ぶ上で作ったア�
 なんとなくこんな感じのフローだよ
 基本的にPokeDexにデータがあってそれを編集していく感じ
 
-![pokemon-flow](https://user-images.githubusercontent.com/109070415/216810386-be8b7aa6-7100-4b78-a88e-098e877663bc.svg)
+![pokemon-flow](https://user-images.githubusercontent.com/109070415/216913370-1d56062a-8a91-4c1f-9cd6-64823f64face.svg)
