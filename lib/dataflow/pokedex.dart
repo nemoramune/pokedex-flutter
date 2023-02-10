@@ -11,9 +11,11 @@ final _pokedexCacheProvider = StateProvider<Map<int, Pokemon>>((_) => {});
 
 @riverpod
 Future<Map<int, Pokemon>> pokeDex(PokeDexRef ref) async {
-  final cache = ref.watch(_pokedexCacheProvider);
-  final favoriteMap = await ref.watch(favoritesStreamProvider.selectAsync(
-      (data) => data.entries.where((element) => element.value != cache[element.key]?.isFavorite)));
+  final cache = ref.read(_pokedexCacheProvider);
+  final favoriteMap = await ref.watch(favoritesStreamProvider.selectAsync((data) => data.entries
+      .where((element) =>
+          cache[element.key] != null && element.value != cache[element.key]?.isFavorite)));
+  if (favoriteMap.isEmpty) return cache;
   for (var entry in favoriteMap) {
     final pokemon = cache[entry.key];
     if (pokemon == null || pokemon.isFavorite == entry.value) continue;
