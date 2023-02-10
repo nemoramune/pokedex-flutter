@@ -12,8 +12,8 @@ final favoritesStreamProvider = StreamProvider.autoDispose((ref) async* {
 });
 
 @riverpod
-Future<void> toggleFavoritePokemon(ToggleFavoritePokemonRef ref, int id) async {
-  final isFavorite =
-      await ref.read(favoritesStreamProvider.future).then(((data) => data[id] ?? false));
-  return ref.read(pokemonFavoriteBoxProvider.selectAsync((box) => box.put(id, !isFavorite)));
-}
+Future<void> toggleFavoritePokemon(ToggleFavoritePokemonRef ref, int id) =>
+    ref.read(pokemonFavoriteBoxProvider.selectAsync((box) {
+      final isFavorite = box.get(id) ?? false;
+      box.put(id, !isFavorite);
+    }));
