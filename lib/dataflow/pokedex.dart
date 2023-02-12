@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pokedex/model/pokemon.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,4 +42,25 @@ Future<void> fetchPokemonData(FetchPokemonDataRef ref, List<int> ids) async {
     return MapEntry(pokemon.id, pokemon);
   }));
   ref.watch(_pokedexCacheProvider.notifier).update((state) => {...state, ...pokemonMap});
+}
+
+@riverpod
+Future<List<Pokemon>> getPokemonDataList(GetPokemonDataListRef ref, List<int> ids) async {
+  final cache = await ref.watch(pokeDexProvider
+      .selectAsync((data) => ids.map((id) => data[id]).whereType<Pokemon>().toList()));
+  if (cache.length == ids.length) return cache;
+  final uncachedIds = ids.where((id) => cache.elementAtOrNull(id) == null).toList();
+  final entities = await ref.read(pokemonEntitiesProvider(uncachedIds).future);
+  final favoriteMap = await ref.read(favoritesStreamProvider.future);
+  final pokemonMap = Map.fromEntries(entities.map((entity) {
+    final isFavorite = favoriteMap[entity.id] ?? false;
+    final pokemon = Pokemon.fromEntity(
+      entity: entity,
+      isFavorite: isFavorite,
+    );
+    return MapEntry(pokemon.id, pokemon);
+  }));
+  ref.read(_pokedexCacheProvider.notifier).update((state) => {...state, ...pokemonMap});
+  final list = [...cache, ...pokemonMap.values].sorted((lhs, rhs) => lhs.id.compareTo(rhs.id));
+  return list;
 }
