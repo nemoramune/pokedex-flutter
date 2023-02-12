@@ -27,24 +27,6 @@ Future<Map<int, Pokemon>> pokeDex(PokeDexRef ref) async {
 }
 
 @riverpod
-Future<void> fetchPokemonData(FetchPokemonDataRef ref, List<int> ids) async {
-  final favoriteMap = await ref.read(favoritesStreamProvider.future);
-  final cache = ref.read(_pokedexCacheProvider);
-  final idsNotInCache = ids.where((id) => !cache.containsKey(id)).toList();
-  if (idsNotInCache.isEmpty) return;
-  final entities = await ref.read(pokemonEntitiesProvider(idsNotInCache).future);
-  final pokemonMap = Map.fromEntries(entities.map((entity) {
-    final isFavorite = favoriteMap[entity.id] ?? false;
-    final pokemon = Pokemon.fromEntity(
-      entity: entity,
-      isFavorite: isFavorite,
-    );
-    return MapEntry(pokemon.id, pokemon);
-  }));
-  ref.watch(_pokedexCacheProvider.notifier).update((state) => {...state, ...pokemonMap});
-}
-
-@riverpod
 Future<List<Pokemon>> getPokemonDataList(GetPokemonDataListRef ref, List<int> ids) async {
   final cache = await ref.watch(pokeDexProvider
       .selectAsync((data) => ids.map((id) => data[id]).whereType<Pokemon>().toList()));
